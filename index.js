@@ -6,10 +6,13 @@ const playerScore = document.getElementById("playerCount");
 const computerScore = document.getElementById("computerCount");
 const tieScore = document.getElementById("tieCount");
 
-let playerCounts = 0;
-let computerCounts = 0;
-let tieCounts = 0;
 
+
+let scores =  JSON.parse(localStorage.getItem('scores')) || {
+    playerCounts : 0,
+    computerCounts : 0,
+    tieCounts : 0
+};
 function playStation(playerplay){
     let computerplay = chioces[Math.floor(Math.random() * 3)];
     let result = '';
@@ -58,30 +61,33 @@ function playStation(playerplay){
     computerDisplay.textContent = `COMPUTER: ${computerplay}`;
     
     if(result === "YOU WIN!"){
-        playerCounts++;
-        playerScore.textContent = playerCounts;
+        scores.playerCounts += 1;
+        playerScore.textContent = scores.playerCounts;
         resultDisplay.classList.add("greenColor");
     }
     else if(result === "YOU LOSE!"){
-        computerCounts++;
-        computerScore.textContent = computerCounts;
+        scores.computerCounts +=1;
+        computerScore.textContent = scores.computerCounts;
         resultDisplay.classList.add("redColor");
     }
     else{
-        tieCounts++;
-        tieScore.textContent = tieCounts;
+        scores.tieCounts +=1;
+        tieScore.textContent = scores.tieCounts;
     }
 }
+localStorage.setItem("scores", JSON.stringify(scores));
 
 function reset() {
-    playerCounts = 0;
-    computerCounts = 0;
-    tieCounts = 0;
-    playerScore.textContent = playerCounts;
-    computerScore.textContent = computerCounts;
-    tieScore.textContent = tieCounts;
+    scores.playerCounts = 0;
+    scores.computerCounts = 0;
+    scores.tieCounts = 0;
+    playerScore.textContent = scores.playerCounts;
+    computerScore.textContent = scores.computerCounts;
+    tieScore.textContent = scores.tieCounts;
     resultDisplay.classList.remove('redColor', 'greenColor');
     resultDisplay.textContent = '';
     playerDisplay.textContent = '';
     computerDisplay.textContent = '';
+    localStorage.removeItem("scores");
 }
+reset()
